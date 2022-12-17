@@ -1,0 +1,11 @@
+
+*.class
+NameGuesser/target/classes/Indian_Names.csv
+NameGuesser/target/maven-archiver/pom.properties
+NameGuesser/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+NameGuesser/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+NameGuesser/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+NameGuesser/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+NameGuesser/target/nameGuesser-0.0.1-SNAPSHOT.jar
+NameGuesser/target/original-nameGuesser-0.0.1-SNAPSHOT.jar
+NameGuesser/target/test-classes/Indian_Names_Test.csv
