@@ -5,21 +5,29 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import domain.Trie;
-import utilities.CSVReader;
+import utilities.FileReader;
 
 public class NameGuesser {
 	Trie trie = null;
 
 	public NameGuesser(String csvFile, int columnPos, boolean ignoreHeader) {
-		Set<String> names = CSVReader.readNamesFromCSV(csvFile, columnPos, ignoreHeader);
+		Set<String> names = FileReader.readNamesFromCSV(csvFile, columnPos, ignoreHeader);
 		trie = new Trie(names);
 	}
 
 	public NameGuesser() {
-		Set<String> names = CSVReader.readNamesFromCSV();
+		System.out.println(" Reading names from file...");
+		Set<String> names = FileReader.readNamesFromCSV();
+		System.out.println(" " + names.size() + " names found in file.");
+		System.out.println(" Generating Trie for the given names. Please wait this may take several minutes.");
+		long start = System.nanoTime();
 		trie = new Trie(names);
+		long finish = System.nanoTime();
+		long timeElapsedInSecs = TimeUnit.NANOSECONDS.toSeconds(finish - start);
+		System.out.println(" Trie generated in " + timeElapsedInSecs + " seconds.");
 	}
 
 	public Set<String> search(String patter) {
@@ -29,7 +37,6 @@ public class NameGuesser {
 	}
 
 	public static void main(String[] args) {
-
 		NameGuesser sol = new NameGuesser();
 		while (true) {
 			try {
@@ -52,12 +59,21 @@ public class NameGuesser {
 					System.out.println(" Quitting program.");
 					break;
 				}
+				long start = System.nanoTime();
 				Set<String> names = sol.search(input);
-				System.out.println(" Names matching the pattern " + input + " are : ");
-				int id = 1;
-				for (String name : names) {
-					System.out.println(id + " " + name);
-					id++;
+				long finish = System.nanoTime();
+				long timeElapsedInMillis = TimeUnit.NANOSECONDS.toMillis(finish - start);
+				System.out.println(" Search completed in " + timeElapsedInMillis + " milliseconds.");
+
+				if (names.isEmpty()) {
+					System.out.println(" No names found matching the pattern " + input);
+				} else {
+					System.out.println(" Names matching the pattern " + input + " are : ");
+					int id = 1;
+					for (String name : names) {
+						System.out.println(id + " " + name);
+						id++;
+					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
