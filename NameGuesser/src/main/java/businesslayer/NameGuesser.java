@@ -10,14 +10,36 @@ import java.util.concurrent.TimeUnit;
 import domain.Trie;
 import utilities.FileReader;
 
+/**
+ * This class defines API that can be used to search names from a dataset by
+ * passing a pattern in the form of a*c*e where * can be any letter between a to
+ * z.
+ * 
+ * This class also declares a main function which provides a console interface
+ * for the Name Guesser API
+ * 
+ * @author suraj
+ *
+ */
 public class NameGuesser {
 	Trie trie = null;
 
+	/**
+	 * Parameterized Constructor for NameGuesser
+	 * 
+	 * @param csvFile      CSV file for the name dataset
+	 * @param columnPos    Column position for the name column
+	 * @param ignoreHeader True if header row needs to be ignored
+	 */
 	public NameGuesser(String csvFile, int columnPos, boolean ignoreHeader) {
 		Set<String> names = FileReader.readNamesFromCSV(csvFile, columnPos, ignoreHeader);
 		trie = new Trie(names);
 	}
 
+	/**
+	 * Default constructor for NameGuesser. Uses default file for reading name
+	 * records.
+	 */
 	public NameGuesser() {
 		System.out.println(" Reading names from file...");
 		Set<String> names = FileReader.readNamesFromCSV();
@@ -30,12 +52,24 @@ public class NameGuesser {
 		System.out.println(" Trie generated in " + timeElapsedInSecs + " seconds.");
 	}
 
+	/**
+	 * This methods returns set of names matching the passed pattern
+	 * 
+	 * @param patter A string havign format like a*c*e where * can be any alphabets
+	 *               between a to z
+	 * @return Set of names matching the pattern
+	 */
 	public Set<String> search(String patter) {
 		Set<String> result = new HashSet<>();
 		trie.search(patter, null, 0, result);
 		return result;
 	}
 
+	/**
+	 * Console application/client which used NameGuesser search API
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		NameGuesser sol = new NameGuesser();
 		while (true) {
@@ -60,7 +94,7 @@ public class NameGuesser {
 					break;
 				}
 				long start = System.nanoTime();
-				Set<String> names = sol.search(input);
+				Set<String> names = sol.search(input.toLowerCase());
 				long finish = System.nanoTime();
 				long timeElapsedInMillis = TimeUnit.NANOSECONDS.toMillis(finish - start);
 				System.out.println(" Search completed in " + timeElapsedInMillis + " milliseconds.");

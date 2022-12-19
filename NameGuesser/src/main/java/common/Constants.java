@@ -1,5 +1,11 @@
 package common;
 
+/**
+ * Class to maintain all constants
+ * 
+ * @author suraj
+ *
+ */
 public class Constants {
 	private Constants() {
 	}

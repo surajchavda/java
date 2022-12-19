@@ -1,36 +1,29 @@
 package utilities;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
-
 import common.Constants;
 
+/**
+ * This class is used to read name data from a file.
+ * 
+ * @author suraj
+ *
+ */
 public class FileReader {
 	private FileReader() {
 	}
-	/*
-	 * public static void main(String[] args) { try { BufferedWriter bw = new
-	 * BufferedWriter( new OutputStreamWriter(new
-	 * FileOutputStream("c:/opt/names_sorted.txt"))); Set<String> names =
-	 * readNamesFromFile("ap-names-grouped.txt", "\\s+", 4, true); TreeSet<String>
-	 * names_sorted = new TreeSet<>(names); for (String name : names_sorted) {
-	 * bw.write(name); bw.newLine(); } bw.close(); } catch (IOException e) {
-	 * e.printStackTrace(); } }
-	 */
 
 	private static FileReader fileReader = null;
 
+	/**
+	 * Singleton getInstance() implementation
+	 * 
+	 * @return instance of FileReader
+	 */
 	public static FileReader getInstance() {
 		if (fileReader == null) {
 			fileReader = new FileReader();
@@ -38,11 +31,28 @@ public class FileReader {
 		return fileReader;
 	}
 
+	/**
+	 * Returns Set of names from the given file
+	 * 
+	 * @param csvFile      CSV file from which the name data needs to be fetched
+	 * @param columnPos    Position of the column which contains name data
+	 * @param ignoreHeader True if header row needs to be ignored else False
+	 * @return Set of names fetched from the file
+	 */
 	public static Set<String> readNamesFromCSV(String csvFile, int columnPos, boolean ignoreHeader) {
 		String splitBy = Constants.COMMA;
 		return readNamesFromFile(csvFile, splitBy, columnPos, ignoreHeader);
 	}
 
+	/**
+	 * Returns Set of names from the given file
+	 * 
+	 * @param file         File from which the name data needs to be fetched
+	 * @param splitBy      Delimiter to be used for separating the columns
+	 * @param columnPos    Position of the column which contains name data
+	 * @param ignoreHeader True if header row needs to be ignored else False
+	 * @return Set of names fetched from the file
+	 */
 	public static Set<String> readNamesFromFile(String file, String splitBy, int columnPos, boolean ignoreHeader) {
 		String line = null;
 		if (splitBy == null || splitBy.isEmpty()) {
@@ -52,6 +62,7 @@ public class FileReader {
 		try {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(FileReader.class.getClassLoader().getResourceAsStream(file)));
+			// If ignoreHeader is true, skip the first row
 			if (ignoreHeader) {
 				br.readLine();
 			}
@@ -69,6 +80,11 @@ public class FileReader {
 		return output;
 	}
 
+	/**
+	 * Returns Set of names from the default file embedded in code
+	 * 
+	 * @return Set of names fetched from the default file embedded in code
+	 */
 	public static Set<String> readNamesFromCSV() {
 		return readNamesFromCSV(Constants.NAMES_SORTED_FILE, Constants.COLUMN_POS, Constants.IGNORE_COLUMN_ROW);
 	}
